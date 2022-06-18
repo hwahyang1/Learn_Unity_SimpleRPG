@@ -26,14 +26,22 @@ public class MonsterController : MonoBehaviour
 	[SerializeField]
 	private float destroyDelay = 2.5f;
 
+	[Header("몬스터 체력바 오브젝트")]
+	[SerializeField]
+	private GameObject hpFront;
+
 	private float nowHealth = 100f;
 	private float nowCooldown = 0f;
+
+	private float maxWidth = 1.2f;
 
 	private GameObject target;
 
 	private Animator ani;
 	private Rigidbody rig;
 	private NavMeshAgent nav;
+
+	private RectTransform rect;
 
 	private void Start()
 	{
@@ -46,14 +54,24 @@ public class MonsterController : MonoBehaviour
 
 	private void Update()
 	{
+		float nowWidth = maxWidth * (nowHealth / maxHealth);
+
+		if (rect == null)
+		{
+			rect = hpFront.GetComponent<RectTransform>();
+		}
+
+		float sizeY = rect.sizeDelta.y;
+		rect.sizeDelta = new Vector2(nowWidth, sizeY);
+
 		if (nowHealth <= 0f)
 		{
+			ani.SetTrigger("Die");
+
 			if (nav.enabled)
 			{
 				nav.enabled = false;
 				rig.isKinematic = true;
-
-				ani.SetTrigger("Die");
 
 				StartCoroutine("MonsterDead");
 			}
@@ -133,5 +151,22 @@ public class MonsterController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.5f);
 		target.GetComponent<PlayerController>().GetDamaged(damage);
+	}
+
+	/*
+	 * [Method] GetDamaged(float damage): void
+	 * 플레이어가 데미지를 받았을 때 체력을 깎습니다.
+	 * 
+	 * <float damage>
+	 * 플레이어의 체력을 얼마나 깎을지 결정합니다.
+	 */
+	public void GetDamaged(float damage)
+	{
+		if (nowHealth > 0)
+		{
+			ani.SetTrigger("Damaged");
+			nowHealth -= damage;
+			nowCooldown = 0f;
+		}
 	}
 }

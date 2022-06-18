@@ -14,12 +14,17 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float health = 100f;
 
+	[SerializeField]
+	private float damage = 10f;
+
 	[Header("플레이어 움직임 설정")]
 	[SerializeField, Range(0f, 10f)]
 	private float moveSpeed = 5f;
 
 	[SerializeField, Range(0f, 10f)]
 	private float rotationSpeed = 5f;
+
+	private MonsterController monster;
 
 	private Animator ani;
 	private Rigidbody rig;
@@ -80,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
 	/*
 	 * [Method] GetDamaged(float damage): void
-	 * 플레이어가 데미지를 받으면 이벤트를 발생합니다.
+	 * 플레이어가 데미지를 받았을 때 체력을 깎습니다.
 	 * 
 	 * <float damage>
 	 * 플레이어의 체력을 얼마나 깎을지 결정합니다.
@@ -104,5 +109,50 @@ public class PlayerController : MonoBehaviour
 	public float GetHealth()
 	{
 		return health;
+	}
+
+	/*
+	 * [Method] GetDamage(): float
+	 * 플레이어의 공격력을 반환합니다.
+	 * 
+	 * <RETURN: float>
+	 * 공격력을 반환합니다.
+	 */
+	public float GetDamage()
+	{
+		return damage;
+	}
+
+	/*
+	 * [Method] SetMonsterControl(MonsterController controller): void
+	 * 데미지를 입힐 몬스터를 지정합니다.
+	 * 
+	 * <MonsterController controller>
+	 * 데미지를 입힐 몬스터를 지정합니다.
+	 */
+	public void SetMonsterControl(MonsterController controller)
+	{
+		monster = controller;
+	}
+
+	/*
+	 * [Method] Attack(MonsterController controller): void
+	 * 몬스터에게 데미지를 입힙니다.
+	 */
+	public void Attack()
+	{
+		if (monster != null)
+		{
+			monster.GetDamaged(damage);
+		}
+	}
+
+	/*
+	 * [Method] AfterAttack(): void
+	 * 몬스터에게 데미지를 입힌 뒤의 작업을 처리합니다.
+	 */
+	public void AfterAttack()
+	{
+		monster = null;
 	}
 }
