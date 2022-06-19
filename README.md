@@ -12,6 +12,8 @@
 
 - 에셋: Free Stylized Skybox by Yuki2022 ([링크](https://assetstore.unity.com/packages/2d/textures-materials/sky/free-stylized-skybox-212257))
 
+- 폰트: 넥슨 메이플스토리 ([링크](http://levelup.nexon.com/font/index.aspx?page=5))
+
 - 아이콘: Twitter [@HY\_Design\_](https://twitter.com/HY_Design_) (Twitter [@Zeroffi](https://twitter.com/Zeroffi) 트레틀)
 
 ## 실행 파일

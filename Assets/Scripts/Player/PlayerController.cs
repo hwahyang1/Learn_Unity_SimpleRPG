@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 {
 	[Header("플레이어 기본 속성")]
 	[SerializeField]
-	private float health = 100f;
+	private float maxHealth = 100f;
 
 	[SerializeField]
 	private float damage = 10f;
@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField, Range(0f, 10f)]
 	private float rotationSpeed = 5f;
 
+	private float health = 100f;
+
 	private MonsterController monster;
 
 	private Animator ani;
@@ -34,10 +36,22 @@ public class PlayerController : MonoBehaviour
 	{
 		ani = GetComponent<Animator>();
 		rig = GetComponent<Rigidbody>();
+
+		slider = GameObject.Find("Slider").GetComponent<Slider>();
+
+		health = maxHealth;
+
+		if (slider != null)
+		{
+			slider.maxValue = maxHealth;
+			slider.value = health;
+		}
 	}
 
 	private void Update()
 	{
+		slider.value = Mathf.Lerp(slider.value, health, Time.deltaTime * 3);
+
 		if (health > 0)
 		{
 			float h = Input.GetAxis("Horizontal");
@@ -78,9 +92,18 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			ani.SetTrigger("Die");
+			StartCoroutine(PlayerDie());
 		}
 
 		rig.angularVelocity = Vector3.zero; // 다른 GameObject와 부딪혀서 의도치 않게 움직이는 현상 방지
+	}
+
+	private IEnumerator PlayerDie()
+	{
+		yield return new WaitForSeconds(3f);
+
+		Camera.main.gameObject.GetComponent<FollowCam>().target = null;
+		Destroy(gameObject);
 	}
 
 	/*

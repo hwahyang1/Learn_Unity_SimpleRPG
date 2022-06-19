@@ -22,11 +22,14 @@ public class FollowCam : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		float angle = Mathf.LerpAngle(transform.eulerAngles.y, target.eulerAngles.y, rotationSpeed * Time.deltaTime);
+		if (target != null)
+		{
+			float angle = Mathf.LerpAngle(transform.eulerAngles.y, target.eulerAngles.y, rotationSpeed * Time.deltaTime);
 
-		Quaternion rotation = Quaternion.Euler(0f, angle, 0f);
+			Quaternion rotation = Quaternion.Euler(0f, angle, 0f);
 
-		transform.position = target.position - (rotation * Vector3.forward * distance) + (Vector3.up * height);
-		transform.LookAt(target);
+			transform.position = target.position - (rotation * Vector3.forward * distance) + (Vector3.up * height);
+			transform.LookAt(target);
+		}
 	}
 }

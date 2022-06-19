@@ -127,7 +127,7 @@ public class MonsterController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player" && other.name == "Player")
+		if (other.tag == "Player" && other.name.Contains("Player"))
 		{
 			target = other.gameObject;
 		}
@@ -135,7 +135,7 @@ public class MonsterController : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Player" && other.name == "Player")
+		if (other.tag == "Player" && other.name.Contains("Player"))
 		{
 			target = null;
 		}
